@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Random User</title>
+</head>
+<body>
+	<h1>Random User</h1>
+	<button onclick="buttonClicked()">Get a user</button>
+	<div>
+	<img src="" id="userImg">
+		<p id="name"></p>
+		<p id="email"></p>
+		<p id="phone"></p>
+		<p id="address"></p>
+		<p id="dob"></p>
+	</div>
+
+	<script type="text/javascript">
+
+		function buttonClicked(){
+			fetch('https://www.randomuser.me/api')
+			.then(response => response.json())
+			.then(data => {
+				console.log(data)
+				var resultsArray = data["results"]
+				var userObj = resultsArray[0];
+				var nameObj = userObj["name"]
+				var firstName = nameObj["title"] +" "+nameObj["first"]+" "+nameObj["last"]
+				var email = userObj["email"]
+				var addressObj = userObj["location"];
+          // Get all the names - title  + firstName + lastName
+
+          // bring out email
+
+          document.getElementById("name").innerHTML = firstName
+          document.getElementById("email").innerHTML = email
+
+
+          /// dob
+          document.getElementById("dob").innerHTML = userObj["dob"]["date"]
+
+
+          // phone
+          document.getElementById("phone").innerHTML = userObj["phone"]
+          /// address
+          document.getElementById("address").innerHTML = addressObj["street"]["number"] + " " + addressObj["street"]["name"] + " "+ addressObj["city"] + " "+addressObj["state"]+ " "+addressObj["postcode"] + " "
+          +addressObj["country"]
+          /// image
+          document.getElementById("userImg").setAttribute("src", userObj["picture"]["large"]);
+      })
+			.catch(function(err){
+				console.log(err);
+			})
+
+		}
+	</script>
+</body>
+</html>
